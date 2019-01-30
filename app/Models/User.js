@@ -7,6 +7,18 @@ const Model = use('Model')
 const Hash = use('Hash')
 
 class User extends Model {
+
+ client(){
+   return this.belongsTo('App/Models/Client');
+ }
+ merchant(){
+   return this.belongsTo('App/Models/Merchant');
+ }
+
+
+
+
+
   static boot () {
     super.boot()
 

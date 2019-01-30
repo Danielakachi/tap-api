@@ -19,3 +19,37 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+
+
+Route.post('register', 'AuthController.register')
+Route.post('login', 'AuthController.login')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route.get('/signup','ClientSignupController.index')
+
+// Route.get('*', ()=>{
+//   return { invalid: 'Sorry the request is invalid'}
+// })
