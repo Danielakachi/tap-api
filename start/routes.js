@@ -21,9 +21,13 @@ Route.get('/', () => {
 })
 
 
+// Register
+Route.post('register', 'AuthController.Register')
+Route.post('register/client', 'AuthController.RegisterClient')
+Route.post('register/merchant', 'AuthController.RegisterMerchant')
 
-Route.post('register', 'AuthController.register')
-Route.post('login', 'AuthController.login')
+//Login
+Route.post('login', 'AuthController.Login')
 
 
 
