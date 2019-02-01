@@ -66,9 +66,10 @@ async RegisterClient({request,response}){
 
      //make object for client details
      const client_data = {user_id,firstname,lastname}
+     const balance = 0;
      
      //register user in client table
-     const client = await Client.create({...client_data})
+     const client = await Client.create({...client_data,balance})
 
      return response.status(200).json({
          message:'Account Created'
@@ -103,8 +104,10 @@ async RegisterMerchant({request,response}){
 
     // make object for Merchant details
     const merchant_id = {user_id,company_name}
+    const balance = 0;
 
-    const merchant = await Merchant.create({...merchant_id})
+    const merchant = await Merchant.create({...merchant_id,balance})
+    console.log(merchant)
 
     return response.status(200).json({
         message:'Account Created'
@@ -114,7 +117,7 @@ async RegisterMerchant({request,response}){
 }
 async Login ({request,auth,response}){
     const  {email, password} = request.all()
-    const { token} = await auth.attempt(email,password);
+    const { token } = await auth.attempt(email,password);
 
     return response.status(200).json({message: 'Logged in', token});
 
