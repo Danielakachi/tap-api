@@ -7,6 +7,9 @@ class Client extends Model {
     user(){
         return this.belongsTo('App/Models/User');
     }
+    deposits(){
+        return this.hasMany('App/Models/Deposit')
+      }
     
 }
 

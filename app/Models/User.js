@@ -19,6 +19,7 @@ class User extends Model {
 
 
 
+
   static boot () {
     super.boot()
 

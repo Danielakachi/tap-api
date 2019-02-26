@@ -46,13 +46,12 @@ async RegisterClient({request,response}){
      })
 
      if (validation.fails()){
-         return response.status(400).json({
-             message:validation.messages()
-         })
+         return response.status(400)
+         .json({    message:validation.messages() })
      }
 
 
-     const {email,password} =data
+     const {email,password} = data
      const new_data = {
          email,
          password
@@ -107,8 +106,7 @@ async RegisterMerchant({request,response}){
     const balance = 0;
 
     const merchant = await Merchant.create({...merchant_id,balance})
-    console.log(merchant)
-
+    
     return response.status(200).json({
         message:'Account Created'
     })
