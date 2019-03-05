@@ -35,7 +35,7 @@ class AuthController {
 //     return response.status(200).json({message: 'Account Created',user });
 // }
 
-async RegisterClient({request,response}){
+async RegisterClient({request,response,auth}){
      const data = request.only(['email','password','firstname','lastname']);
 
      const validation =await  validateAll(data , {
@@ -70,8 +70,11 @@ async RegisterClient({request,response}){
      //register user in client table
      const client = await Client.create({...client_data,balance})
 
+     //send a token and the email
+     const {token} = await auth.attempt(email,password)
      return response.status(200).json({
-         message:'Account Created'
+         email,token
+         
      })
 
 
@@ -79,12 +82,13 @@ async RegisterClient({request,response}){
 
 async RegisterMerchant({request,response}){
     const data = request.only(['email','password','company_name']);
-
-    const validation =await  validateAll(data , {
+    
+    const validation = await  validateAll(data , {
         email :'required|email|unique:users',
         company_name :'required',
      })
 
+    
      if (validation.fails()){
         return response.status(400).json({
             message:validation.messages()
@@ -107,8 +111,9 @@ async RegisterMerchant({request,response}){
 
     const merchant = await Merchant.create({...merchant_id,balance})
     
+    const {token} = await auth.attempt(email,password)
     return response.status(200).json({
-        message:'Account Created'
+        email,token
     })
 
 
@@ -116,8 +121,8 @@ async RegisterMerchant({request,response}){
 async Login ({request,auth,response}){
     const  {email, password} = request.all()
     const { token } = await auth.attempt(email,password);
-
-    return response.status(200).json({message: 'Logged in', token});
+    
+    return response.status(200).json({email, token});
 
 }
 

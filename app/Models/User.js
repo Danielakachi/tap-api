@@ -9,10 +9,10 @@ const Hash = use('Hash')
 class User extends Model {
 
  client(){
-   return this.belongsTo('App/Models/Client');
+   return this.hasOne('App/Models/Client');
  }
  merchant(){
-   return this.belongsTo('App/Models/Merchant');
+   return this.hasOne('App/Models/Merchant');
  }
 
 

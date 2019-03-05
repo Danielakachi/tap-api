@@ -10,6 +10,7 @@ class Client extends Model {
     deposits(){
         return this.hasMany('App/Models/Deposit')
       }
+      
     
 }
 

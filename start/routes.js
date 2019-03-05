@@ -26,8 +26,16 @@ Route.post('register', 'AuthController.Register')
 Route.post('register/client', 'AuthController.RegisterClient')
 Route.post('register/merchant', 'AuthController.RegisterMerchant')
 
+
 //Login
 Route.post('login', 'AuthController.Login')
+
+//user
+Route.group('Client', ()=>{
+  Route.post('deposit', 'ClientController.MakeDeposit')
+  Route.post('deposit-test', 'ClientController.MakeDepositTest')  
+}).middleware('auth') 
+
 
 
 

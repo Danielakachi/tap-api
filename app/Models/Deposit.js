@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Deposit extends Model {
+    client(){
+        return this.belongsTo('App/Models/Client');
+    }
 }
 
 module.exports = Deposit
