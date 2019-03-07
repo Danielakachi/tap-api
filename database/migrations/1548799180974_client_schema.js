@@ -16,6 +16,7 @@ class ClientSchema extends Schema {
       table.string('firstname',80).notNullable()
       table.string('lastname',80).notNullable()
       table.float('balance')
+      table.string('pin',4)
         
     })
   }

@@ -30,12 +30,19 @@ Route.post('register/merchant', 'AuthController.RegisterMerchant')
 //Login
 Route.post('login', 'AuthController.Login')
 
-//user
+//client
 Route.group('Client', ()=>{
-  Route.post('deposit', 'ClientController.MakeDeposit')
-  Route.post('deposit-test', 'ClientController.MakeDepositTest')  
+  Route.post('deposit', 'TransactionController.MakeDeposit')
+  Route.post('transfer-fund', 'TransactionController.TransferFunds')
+  Route.post('deposit-test', 'TransactionController.MakeDepositTest')  
 }).middleware('auth') 
 
+
+// //merchant
+// Route.group('Merchant', ()=>{
+//   Route.post('deposit', 'TransactionController.MakeDeposit')
+//   Route.post('deposit-test', 'TransactionController.MakeDepositTest')  
+// }).middleware('auth') 
 
 
 
