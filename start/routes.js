@@ -35,7 +35,10 @@ Route.group('Client', ()=>{
   Route.post('deposit', 'TransactionController.MakeDeposit')
   Route.post('transfer-fund', 'TransactionController.TransferFunds')
   Route.post('deposit-test', 'TransactionController.MakeDepositTest')  
+  Route.post('change-pin', 'ClientController.ChangePin')  
 }).middleware('auth') 
+
+//merchant
 
 
 // //merchant

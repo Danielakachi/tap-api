@@ -91,7 +91,8 @@ class TransactionController {
             return response.status(401).json({message: "Insufficient fund"})
         }
 
-
+        // check for if client is sending to Client 
+        
         // Debit Client
         const new_client_balance = parseFloat(client_balance_from_db) - parseFloat(amount_to_send_from_client)
 
@@ -106,12 +107,6 @@ class TransactionController {
         const new_merchant_balance = parseFloat(merchant_balance_from_db) + parseFloat(amount_to_send_from_client)
 
         await Merchant.query().where('user_id',user_id_merchant).update({balance:parseFloat(new_merchant_balance)})
-
-
-        // await Client.query().where('user_id',user_id).update({balance:parseFloat(amount)})
-
-
-        //check if pin is the same with the client's pin
 
 
         return response.status(200).json({message:"transaction complete"})
