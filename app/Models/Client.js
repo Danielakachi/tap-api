@@ -11,6 +11,9 @@ class Client extends Model {
         return this.hasMany('App/Models/Deposit')
       }
       
+     transfers(){
+        return this.hasMany('App/Models/Transfer');
+    }
     
 }
 
