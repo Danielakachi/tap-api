@@ -36,7 +36,7 @@ class AuthController {
   async RegisterClient({ request, response, auth }) {
     const data = request.only(["email", "password", "firstname", "lastname"]);
 
-    const validation = await validateAll(data, {
+    const validastion = await validateAll(data, {
       email: "required|email|unique:users",
       firstname: "required",
       lastname: "required",

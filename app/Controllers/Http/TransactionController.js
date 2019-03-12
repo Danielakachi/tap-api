@@ -3,6 +3,7 @@ const User = use("App/Models/User")
 const Client = use("App/Models/Client")
 const Merchant = use("App/Models/Merchant")
 const Deposit = use("App/Models/Deposit")
+const Transfer = use("App/Models/Transfer")
 const Env = use('Env');
 const { validateAll } = use('Validator');
 
@@ -73,7 +74,7 @@ class TransactionController {
             })
         }
 
-        const {email,amount:amount_to_send_from_client,pin} = data
+        var {email,amount:amount_to_send_from_client,pin} = data
 
         //get id of the client from email
         const {id:user_id_client} = await User.findBy('email',email)
@@ -107,6 +108,14 @@ class TransactionController {
         const new_merchant_balance = parseFloat(merchant_balance_from_db) + parseFloat(amount_to_send_from_client)
 
         await Merchant.query().where('user_id',user_id_merchant).update({balance:parseFloat(new_merchant_balance)})
+
+        //add record in Transfer Table
+        var amount = amount_to_send_from_client
+        var sender_id = user_id_merchant
+        var reciever_id = user_id_client
+        const transfer_details ={amount,sender_id,reciever_id}
+        await Transfer.create({...transfer_details})
+
 
 
         return response.status(200).json({message:"transaction complete"})

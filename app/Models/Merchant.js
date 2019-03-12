@@ -7,7 +7,9 @@ class Merchant extends Model {
     user(){
         return this.belongsTo('App/Models/User');
     }
-    
+    transfers(){
+        return this.hasMany('App/Models/Transfer');
+    }
 }
 
 module.exports = Merchant
