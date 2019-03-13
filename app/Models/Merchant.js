@@ -10,6 +10,9 @@ class Merchant extends Model {
     transfers(){
         return this.hasMany('App/Models/Transfer');
     }
+    account_number(){
+        return this.hasOne('App/Models/AccountNumber');
+      }
 }
 
 module.exports = Merchant

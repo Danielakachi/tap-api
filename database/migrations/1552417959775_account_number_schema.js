@@ -13,7 +13,7 @@ class AccountNumberSchema extends Schema {
         .unsigned()
         .references('id')
         .inTable('users');
-      table.string('account_no', 20).notNullable();
+      table.string('account_number', 20).notNullable();
       table.string('account_name', 80).notNullable();
       table.string('bank', 80).notNullable();
       table.string('bank_code', 10).notNullable();

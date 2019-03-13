@@ -12,6 +12,7 @@ const Paystack = require('paystack-api')(sk);
 
 class TransactionController {
 
+    // for client to fund account
     async MakeDeposit({response,request,auth}){
 
         const { reference } = request.all() 
@@ -19,7 +20,7 @@ class TransactionController {
         const validation = await validateAll( {reference},{reference:'required'});
     
         if (validation.fails()){
-            return response.status(400).json({messages:validation.messages()})
+            return response.status(400).json({message:validation.messages()})
         }
         
         const paymentVerification = await Paystack.transaction.verify({reference})
@@ -59,6 +60,7 @@ class TransactionController {
     
      }
      
+     // to transfer funds from client to merchant
      async TransferFunds({request,response,auth}){
         const data = request.only(['email','amount','pin'])    
         
@@ -121,6 +123,35 @@ class TransactionController {
         return response.status(200).json({message:"transaction complete"})
 
 
+     }
+
+     //to withdraw funds
+     async withdraw({request,response,auth}){
+         const data = request.only(['amount'])
+
+         const validation =await  validateAll(data, {
+             amount:'required'
+         })
+
+         if(validation.fails()){
+             return response.status(401).json({
+                 message:validation.messages()
+             })
+         }
+
+         const user =await auth.getUser()
+
+         return response.status(200).json({user})
+         
+         const {account_no:account_number,account_name:name,bank_code }= await user.accountnumber()
+
+         //acquire tranfer_recipient
+         const transferRecipient = Paystack.transfer_recipient.create({account_number,name,bank_code,type:'nuban'})
+
+         if(transferRecipient){
+
+         }
+         // 
      }
      async MakeDepositTest({request,response,auth}){
 
