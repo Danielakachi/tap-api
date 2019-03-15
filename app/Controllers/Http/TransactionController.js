@@ -4,6 +4,8 @@ const Client = use("App/Models/Client")
 const Merchant = use("App/Models/Merchant")
 const Deposit = use("App/Models/Deposit")
 const Transfer = use("App/Models/Transfer")
+const Withdrawal = use("App/Models/Withdrawal")
+const AccountNumber = use("App/Models/AccountNumber")
 const Env = use('Env');
 const { validateAll } = use('Validator');
 
@@ -13,7 +15,7 @@ const Paystack = require('paystack-api')(sk);
 class TransactionController {
 
     // for client to fund account
-    async MakeDeposit({response,request,auth}){
+    async makeDeposit({response,request,auth}){
 
         const { reference } = request.all() 
     
@@ -61,7 +63,7 @@ class TransactionController {
      }
      
      // to transfer funds from client to merchant
-     async TransferFunds({request,response,auth}){
+     async transferFunds({request,response,auth}){
         const data = request.only(['email','amount','pin'])    
         
         const validation = await validateAll(data, {
@@ -138,25 +140,43 @@ class TransactionController {
                  message:validation.messages()
              })
          }
+         const {amount} =data
 
-         const user =await auth.getUser()
+         const user = await auth.getUser()
 
-         return response.status(200).json({user})
+         const {id:user_id} = user
          
-         const {account_no:account_number,account_name:name,bank_code }= await user.accountnumber()
+         const {account_number,account_name:name,bank_code } = await AccountNumber.findBy('user_id',user_id)
 
-         //acquire tranfer_recipient
-         const transferRecipient = Paystack.transfer_recipient.create({account_number,name,bank_code,type:'nuban'})
+
+        //  acquire tranfer_recipient
+         const transferRecipient = await  Paystack.transfer_recipient.create({type:'nuban',name,bank_code,account_number})
 
          if(transferRecipient){
+             const {recipient_code:recipient} =transferRecipient.data
+            
 
+             const transfer = await  Paystack.transfer.create({amount,recipient,source:'balance'})
+            
+             if(transfer){
+                 if(transfer.status){
+                     const {transfer_code,amount} = transfer.data
+
+                    const newWithdrawal = await Withdrawal.create({transfer_code,amount,recipient,user_id})
+
+                    return response.status(200).json({
+                        message: 'Withdrawal successful',
+                        newWithdrawal,});
+
+                 }
+                 return response.status(401).json({ message: transfer.message})
+             }
+             return response.status(401).json({ message: "Error with PaymentGateway"})
          }
+         return response.status(401).json({ message: "Error with PaymentGateway"})
          // 
      }
-     async MakeDepositTest({request,response,auth}){
-
-        return response.status(200).json({"message":auth.user})
-     }
+    
     
     
 

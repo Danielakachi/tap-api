@@ -32,12 +32,13 @@ Route.post('login', 'AuthController.Login')
 
 //client
 Route.group(()=>{
-  Route.post('deposit', 'TransactionController.MakeDeposit')
-  Route.post('transfer-fund', 'TransactionController.TransferFunds')
-  Route.post('deposit-test', 'TransactionController.MakeDepositTest')  
-  Route.post('change-pin', 'ClientController.ChangePin')  
+  Route.post('transaction/deposit', 'TransactionController.makeDeposit')
+  Route.post('change-pin', 'ClientController.changePin')  
+  Route.post('set-pin', 'ClientController.setPin')  
+  Route.get('transaction/history','ClientController.getHistory')
   
   //merchant
+  Route.post('transaction/transfer', 'TransactionController.transferFunds')
   Route.post('transaction/withdraw', 'TransactionController.withdraw')  
   Route.post('merchant/accountnumber', 'MerchantController.addAccountNumber')  
 }).middleware('auth') 

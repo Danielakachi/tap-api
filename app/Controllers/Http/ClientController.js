@@ -12,7 +12,7 @@ class ClientController {
  async SetPin(){
 
  }
- async ChangePin({request,response,auth}){
+ async changePin({request,response,auth}){
   const data = request.only(["current_pin","new_pin"]);
 
   const validation = await  validateAll(data , {
