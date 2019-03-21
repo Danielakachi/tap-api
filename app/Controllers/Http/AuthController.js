@@ -36,7 +36,7 @@ class AuthController {
   async RegisterClient({ request, response, auth }) {
     const data = request.only(["email", "password", "firstname", "lastname"]);
 
-    const validastion = await validateAll(data, {
+    const validation = await validateAll(data, {
       email: "required|email|unique:users",
       firstname: "required",
       lastname: "required",
@@ -46,6 +46,7 @@ class AuthController {
     if (validation.fails()) {
       return response.status(400).json({ message: validation.messages() });
     }
+
 
     const { email, password } = data;
     const new_data = {
@@ -110,20 +111,24 @@ class AuthController {
       token
     });
   }
-  async Login({ request, auth, response }) {
+
+  async login({ request, response,auth }) {
     const { email, password } = request.all();
     const { token } = await auth.attempt(email, password);
-
-    const user = await auth.getUser();
+    
+    const user = await User.findBy('email',email)
 
     // check if request is from a client or merchant
     if (await user.client().fetch()) {
       const { firstname, lastname } = await user.client().fetch();
       return response.status(200).json({ email, token, firstname, lastname });
     } else {
-      const { company_name } = await user.merchant().fetch();
-      return response.status(200).json({ email, token, company_name });
+      const merchant = await user.merchant().fetch();
+      return response.status(200).json({ email, token, user });
     }
+
+    
+
   }
 }
 

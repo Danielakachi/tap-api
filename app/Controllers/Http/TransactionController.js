@@ -54,7 +54,7 @@ class TransactionController {
                     .update({balance:parseFloat(amount_from_db)})
             
     
-                return response.status(200).json({newDeposit})
+                return response.status(200).json({message:"Top Up Successful"})
             }
             else {
                 return response.status(200).json({message:gatewayresponse})
@@ -86,6 +86,10 @@ class TransactionController {
         // get the pin from client
         var {pin:pin_from_db,balance:client_balance_from_db} = await Client.findBy('user_id',user_id_client)
 
+        // if client has no pin set
+        if(pin_from_db == null){
+            return response.status(401).json({message: "Invalid Transaction"})
+        }
         //if pin is invalid
         if(pin != pin_from_db ){
             return response.status(401).json({message: "Invalid pin"})
@@ -115,8 +119,8 @@ class TransactionController {
 
         //add record in Transfer Table
         var amount = amount_to_send_from_client
-        var sender_id = user_id_merchant
-        var reciever_id = user_id_client
+        var sender_id = user_id_client
+        var reciever_id = user_id_merchant
         const transfer_details ={amount,sender_id,reciever_id}
         await Transfer.create({...transfer_details})
 

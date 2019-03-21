@@ -21,21 +21,21 @@ Route.get('/', () => {
 })
 
 
+
 // Register
-Route.post('register', 'AuthController.Register')
 Route.post('register/client', 'AuthController.RegisterClient')
 Route.post('register/merchant', 'AuthController.RegisterMerchant')
 
-
 //Login
-Route.post('login', 'AuthController.Login')
+Route.post('login', 'AuthController.login') 
 
 //client
 Route.group(()=>{
   Route.post('transaction/deposit', 'TransactionController.makeDeposit')
   Route.post('change-pin', 'ClientController.changePin')  
   Route.post('set-pin', 'ClientController.setPin')  
-  Route.get('transaction/history','ClientController.getHistory')
+  Route.get('client/transaction/history','ClientController.getHistory')
+  Route.get('merchant/transaction/history','MerchantController.getHistory')
   
   //merchant
   Route.post('transaction/transfer', 'TransactionController.transferFunds')

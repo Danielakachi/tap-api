@@ -2,6 +2,7 @@
 const User = use("App/Models/User")
 const Client = use("App/Models/Client")
 const Deposit = use("App/Models/Deposit")
+const Transfer = use("App/Models/Transfer")
 const Env = use('Env');
 const { validateAll } = use('Validator');
 
@@ -9,7 +10,7 @@ const sk = Env.get('PAYSTACK_SECRET_KEY')
 const Paystack = require('paystack-api')(sk);
 
 class ClientController {
- async SetPin(){
+ async SetPin({request,response,auth}){
 
  }
  async changePin({request,response,auth}){
@@ -55,6 +56,20 @@ if((new_pin).length <4 || (new_pin).length >4 ){
 })
 
    }
+
+  async getHistory({response,auth}){
+    const user = await auth.getUser()
+
+    const deposits = await  user.deposits().fetch()
+    const transfers = await Transfer.query().where("sender_id",user.id).fetch()
+    
+
+    return response.status(200).json({
+        deposits,transfers
+   })
+  }
+
+  
 }
 
 

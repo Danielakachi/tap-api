@@ -14,6 +14,13 @@ class User extends Model {
  merchant(){
    return this.hasOne('App/Models/Merchant');
  }
+ deposits(){
+  return this.hasMany('App/Models/Deposit');
+}
+transfers(){
+  return this.hasMany('App/Models/Transfer');
+}
+
 
 
 

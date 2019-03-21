@@ -2,6 +2,7 @@
 const User = use("App/Models/User")
 const Merchant = use("App/Models/Merchant")
 const AccountNumber = use("App/Models/AccountNumber")
+const Transfer = use("App/Models/Transfer")
 const Env = use('Env');
 const { validateAll } = use('Validator');
 
@@ -53,6 +54,16 @@ class MerchantController {
  
       }
 
+      async getHistory({response,auth}){
+        const user = await auth.getUser()
+
+        const transfers = await Transfer.query().where("reciever_id",user.id).fetch()
+    
+        return response.status(200).json({
+            user
+       })
+      }
+    
 }
 
 module.exports = MerchantController;
