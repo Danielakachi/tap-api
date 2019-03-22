@@ -88,16 +88,16 @@ class TransactionController {
 
         // if client has no pin set
         if(pin_from_db == null){
-            return response.status(401).json({message: "Invalid Transaction"})
+            return response.status(200).json({message: "Invalid Transaction"})
         }
         //if pin is invalid
         if(pin != pin_from_db ){
-            return response.status(401).json({message: "Invalid pin"})
+            return response.status(200).json({message: "Invalid pin"})
         }
 
         //if balance is insufficient
         if( parseFloat(amount_to_send_from_client) > parseFloat(client_balance_from_db) ){
-            return response.status(401).json({message: "Insufficient fund"})
+            return response.status(200).json({message: "Insufficient fund"})
         }
 
         // check for if client is sending to Client 
@@ -126,7 +126,7 @@ class TransactionController {
 
 
 
-        return response.status(200).json({message:"transaction complete"})
+        return response.status(200).json({message:"Transaction Successfull"})
 
 
      }

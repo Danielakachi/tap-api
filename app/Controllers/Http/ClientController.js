@@ -60,8 +60,8 @@ if((new_pin).length <4 || (new_pin).length >4 ){
   async getHistory({response,auth}){
     const user = await auth.getUser()
 
-    const deposits = await  user.deposits().fetch()
-    const transfers = await Transfer.query().where("sender_id",user.id).fetch()
+    const deposits = await  user.deposits()..orderBy('created_at','desc').fetch()
+    const transfers = await Transfer.query().where("sender_id",user.id)..orderBy('created_at','desc').fetch()
     
 
     return response.status(200).json({

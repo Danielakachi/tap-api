@@ -57,10 +57,10 @@ class MerchantController {
       async getHistory({response,auth}){
         const user = await auth.getUser()
 
-        const transfers = await Transfer.query().where("reciever_id",user.id).fetch()
+        const transfers = await Transfer.query().where("reciever_id",user.id).orderBy('created_at','desc').fetch()
     
         return response.status(200).json({
-            user
+            transfers
        })
       }
     
