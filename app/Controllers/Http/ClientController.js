@@ -3,6 +3,7 @@ const User = use("App/Models/User")
 const Client = use("App/Models/Client")
 const Deposit = use("App/Models/Deposit")
 const Transfer = use("App/Models/Transfer")
+const BudgetAnalysis = use("App/Models/BudgetAnalysis")
 const Env = use('Env');
 const { validateAll } = use('Validator');
 
@@ -60,13 +61,49 @@ if((new_pin).length <4 || (new_pin).length >4 ){
   async getHistory({response,auth}){
     const user = await auth.getUser()
 
-    const deposits = await  user.deposits()..orderBy('created_at','desc').fetch()
-    const transfers = await Transfer.query().where("sender_id",user.id)..orderBy('created_at','desc').fetch()
+    const deposits = await  user.deposits().orderBy('created_at','desc').fetch()
+    const transfers = await Transfer.query().where("sender_id",user.id).orderBy('created_at','desc').fetch()
     
 
     return response.status(200).json({
         deposits,transfers
    })
+  }
+
+  async getDetails({response,auth}){
+      const user = await auth.getUser()
+
+      const {firstname,lastname, balance} = await user.client().fetch()
+     
+      return response.status(200).json({
+        firstname,lastname,balance
+   })
+
+  }
+
+  async getBudgetAnalysis({response,auth}){
+       const {id} = await auth.getUser()
+      
+        
+    const {user_id:client_id} = await Client.findBy('user_id',id)
+    const {end_date,budget} = await BudgetAnalysis.findBy("user_id",client_id)
+
+    //check if end_date > current date
+
+    // get all amounts of date   {start_date<=amount<end_date}
+
+
+    //
+    const amounts = await Transfer.query().where("sender_id",client_id).select('amount').fetch()
+    let total_amount_spent = 0;
+    //check if array has one or more items
+    await amounts.toJSON().forEach(item => total_amount_spent += parseFloat(item.amount));
+
+    const remaining = budget-total_amount_spent
+
+      return response.status(200).json({
+          total_amount_spent,budget,remaining
+      })
   }
 
   

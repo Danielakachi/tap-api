@@ -14,6 +14,10 @@ class Client extends Model {
      transfers(){
         return this.hasMany('App/Models/Transfer');
     }
+    budgetanalysis(){
+        return this.hasOne('App/Models/BudgetAnalysis');
+    }
+
     
 }
 

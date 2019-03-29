@@ -71,8 +71,12 @@ class AuthController {
     const { token } = await auth.attempt(email, password);
     return response.status(200).json({
       email,
-      token
+      token,
+      firstname,
+      lastname,
+      balance
     });
+
   }
 
   async RegisterMerchant({ request, response, auth }) {
@@ -108,7 +112,9 @@ class AuthController {
     const { token } = await auth.attempt(email, password);
     return response.status(200).json({
       email,
-      token
+      token,
+      balance,
+      company_name
     });
   }
 
@@ -120,14 +126,12 @@ class AuthController {
 
     // check if request is from a client or merchant
     if (await user.client().fetch()) {
-      const { firstname, lastname } = await user.client().fetch();
-      return response.status(200).json({ email, token, firstname, lastname });
+      const { firstname, lastname,balance } = await user.client().fetch();
+      return response.status(200).json({ email, token, firstname, lastname,balance });
     } else {
-      const merchant = await user.merchant().fetch();
-      return response.status(200).json({ email, token, user });
+      const {balance,company_name} = await user.merchant().fetch();
+      return response.status(200).json({ email, token, user ,balance,company_name});
     }
-
-    
 
   }
 }

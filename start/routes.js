@@ -34,8 +34,15 @@ Route.group(()=>{
   Route.post('transaction/deposit', 'TransactionController.makeDeposit')
   Route.post('change-pin', 'ClientController.changePin')  
   Route.post('set-pin', 'ClientController.setPin')  
+  //add
+  Route.post('set-budget', 'ClientController.setBudget')  
+  
+
   Route.get('client/transaction/history','ClientController.getHistory')
   Route.get('merchant/transaction/history','MerchantController.getHistory')
+  Route.get('client/details','ClientController.getDetails')
+  Route.get('budget-analysis','ClientController.getBudgetAnalysis')
+
   
   //merchant
   Route.post('transaction/transfer', 'TransactionController.transferFunds')
