@@ -118,10 +118,11 @@ class TransactionController {
         await Merchant.query().where('user_id',user_id_merchant).update({balance:parseFloat(new_merchant_balance)})
 
         //add record in Transfer Table
+        var timestamp = new Date().getTime()
         var amount = amount_to_send_from_client
         var sender_id = user_id_client
         var reciever_id = user_id_merchant
-        const transfer_details ={amount,sender_id,reciever_id}
+        const transfer_details ={amount,sender_id,reciever_id,timestamp}
         await Transfer.create({...transfer_details})
 
 

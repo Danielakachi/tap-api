@@ -17,12 +17,17 @@ class TransferSchema extends Schema {
       .references('id')
       .inTable('users');
       table.float('amount');
+  
+       
     })
+
   }
 
   down () {
     this.drop('transfers')
   }
+
+  
 }
 
 module.exports = TransferSchema

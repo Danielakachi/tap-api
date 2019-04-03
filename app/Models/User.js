@@ -20,7 +20,9 @@ class User extends Model {
 transfers(){
   return this.hasMany('App/Models/Transfer');
 }
-
+monthlybudget(){
+  return this.hasOne('App/Models/Monthlybudget');
+}
 
 
 

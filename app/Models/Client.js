@@ -17,6 +17,7 @@ class Client extends Model {
     budgetanalysis(){
         return this.hasOne('App/Models/BudgetAnalysis');
     }
+    
 
     
 }
